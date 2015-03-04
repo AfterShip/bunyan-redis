@@ -15,6 +15,7 @@ Usage
 With existing redis client connection.
 
 ```javascript
+var bunyan = require('bunyan')
 //normal client
 var client = require('redis').createClient(); 
 
@@ -30,7 +31,7 @@ opts)
 
 
 var transport = new RedisTransport({
-  container: 'logs:myslug',//convention `logs:subject`
+  container: 'YOUR_LOG_KEY',
   client: client,
   db: DB_INDEX
 });
