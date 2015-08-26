@@ -1,6 +1,5 @@
 'use strict';
 
-var redis = require('redis');
 var vasync = require('vasync');
 var events = require('events');
 var stringify = require('json-stringify-safe');
@@ -12,30 +11,21 @@ var stringify = require('json-stringify-safe');
  * @param {String} opts.container Redis key
  * @param {Number} opts.length List max length
  * @param {Object} opts.client Redis client instance
- * @param {String} opts.host Redis host
- * @param {Number} opts.port Redis port
- * @param {Number} opts.db Redis database index
  * @param {String} opts.password Redis password
  * @param {Number} opts.drop_factor, by which overflown items are dropped
  * @param {Boolean} opts.diagnosis, enable diagnosis mode, which may insert some info into redis
  * @constructor
  */
 function RedisTransport (opts) {
-  this._container = opts.container || 'logs:unknown';
-  this._length = opts.length || undefined;
-  this._client = opts.client || redis.createClient(opts.port, opts.host);
+
+  if(!opts.client || !opts.container || !opts.length) {
+	  throw "client, container and length are required fields";
+  }
+  this._container = opts.container;
+  this._length = opts.length;
+  this._client = opts.client;
   this._drop_factor = opts.drop_factor || 0;
   this._diagnosis = opts.diagnosis || false;
-
-  // Authorize cleint
-  if (opts.hasOwnProperty('password')) {
-    this._client.auth(opts.password);
-  }
-
-  // Set database index if no pass-in client
-  if (opts.hasOwnProperty('db') && (!opts.client)) {
-    this._client.select(opts.db);
-  }
 }
 
 RedisTransport.prototype = Object.create(events.EventEmitter.prototype);
