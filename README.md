@@ -1,7 +1,10 @@
 bunyan-redis
 ============
 
-Bunyan redis transport
+### What's changed in this fork
+* reduced ops by reusing results from `push` command
+* optimized trimming by applied drop factor
+* only accept well-initialized redis-client
 
 Installation
 ========
@@ -15,35 +18,30 @@ Usage
 With existing redis client connection.
 
 ```javascript
-//normal client
-var client = require('redis').createClient(); 
+var ioredis = require('ioredis');
+var client = new ioredis({
+	port: 6379,          // Redis port
+	host: '127.0.0.1',   // Redis host
+	db:15
+});
+var RedisTransport = require('../');
+var bunyan = require('bunyan');
 
-//sentinel client
-var client = require('redis-sentinel').createClient(
-[
-    {host: 'SENTINEL_HOST_1', port: PORT},
-    {host: 'SENTINEL_HOST_2', port: PORT}
-],
-masterName, 
-opts)
-);
-
-
-var transport = new RedisTransport({
-  container: 'logs:myslug',//convention `logs:subject`
-  client: client,
-  db: DB_INDEX
+transport = new RedisTransport({
+	container: 'logs:foo',
+	client: client,
+	drop_factor: 0.25,
+	length:10,
+	diagnosis: true
 });
 
-var logger = bunyan.createLogger({
-  name: 'bunyan-redis',
-  streams: [{
-    type: 'raw',
-    level: 'trace',
-    stream: transport,
-    length: 10000,
-    drop_factor: 0.1
-  }]
+logger = bunyan.createLogger({
+	name: 'name',
+	streams: [{
+		type: 'raw',
+		level: 'trace',
+		stream: transport
+	}]
 });
 ```
 
@@ -51,10 +49,6 @@ And with connection data.
 
 Options
 ========
-* host - redis hostname
-* port - redis port
-* db - redis database index
-* password - redis password
 * client - redis client instance
 * container - redis key
 * length: maximum size of log queue
