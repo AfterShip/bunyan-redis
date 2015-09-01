@@ -1,6 +1,6 @@
 {
   "name": "@aftership/bunyan-redis",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Bunyan redis transport",
   "main": "index.js",
   "dependencies": {
