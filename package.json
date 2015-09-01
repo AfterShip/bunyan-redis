@@ -1,36 +1,25 @@
 {
-  "name": "bunyan-redis",
-  "version": "0.1.4",
+  "name": "@aftership/bunyan-redis",
+  "version": "1.0.3",
   "description": "Bunyan redis transport",
   "main": "index.js",
   "dependencies": {
     "json-stringify-safe": "^5.0.0",
-    "redis": "^0.10.3",
-    "vasync": "^1.4.3"
-  },
-  "devDependencies": {
-    "bunyan": "^1.1.3",
-    "lodash": "^2.4.1",
-    "mocha": "^1.21.4",
-    "must": "^0.12.0",
-    "redis-mock": "^0.3.0"
-  },
-  "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec test/*"
+    "vasync": "^1.6.3"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/harrisiirak/bunyan-redis.git"
+    "url": "git@github.com:AfterShip/bunyan-redis.git"
   },
   "keywords": [
     "redis",
     "bunyan",
     "log"
   ],
-  "author": "Harri Siirak <harri.siirak@gmail.com>",
+  "author": "Feiko Lai <feiko@aftership.net>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/harrisiirak/bunyan-redis/issues"
+    "url": "https://github.com/AfterShip/bunyan-redis/issues"
   },
-  "homepage": "https://github.com/harrisiirak/bunyan-redis"
+  "homepage": "https://github.com/AfterShip/bunyan-redis"
 }
